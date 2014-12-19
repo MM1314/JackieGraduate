@@ -1,0 +1,49 @@
+#带注释的文字不能够放在最后，否则会提示"Android NDK :Warning ,there's no modules in the project"
+#LOCAL_PATH := $(call my-dir)
+
+#include $(CLEAR_VARS)
+
+#OPENCV_CAMERA_MODULES:=off
+#OPENCV_INSTALL_MODULES:=off
+#OPENCV_LIB_TYPE:=SHARED
+#include ../../sdk/native/jni/OpenCV.mk
+
+#LOCAL_SRC_FILES  := DetectionBasedTracker_jni.cpp
+#LOCAL_C_INCLUDES += $(LOCAL_PATH)
+#LOCAL_LDLIBS     += -llog -ldl
+
+#LOCAL_MODULE     := detection_based_tracker
+
+#include $(BUILD_SHARED_LIBRARY)
+
+
+
+LOCAL_PATH:=$(call my-dir)
+include $(CLAER_VARS)
+
+#自动将依赖的OpenCV的so库拷贝到libs目录下，但很遗憾的是，
+#这个命令只对OPENCV_CAMERA_MODULES有效。只有当OPENCV_CAMERA_MODULES:=on时，
+#可以看到他会自动将里面的带camera的so拷贝至工程下的libs文件夹下。
+
+OpenCV_INSTALL_MODULES:=on
+OPENCV_CAMERA_MODULES:=off
+
+#OPENCV_LIB_TYPE:=STATIC
+OPENCV_LIB_TYPE:=SHARED
+
+#ifeq("$(wildcard$(OPENCV_MK_PATH))","")
+ifeq ("$(wildcard $(OPENCV_MK_PATH))","")
+include E:\OpenCV-2.4.9-android-sdk\sdk\native\jni\OpenCV.mk
+else
+include $(OPENCV_MK_PATH)
+endif
+
+LOCAL_MODULE     := detection_based_tracker
+LOCAL_C_INCLUDES += $(LOCAL_PATH)
+LOCAL_SRC_FILES := DetectionBasedTracker_jni.cpp
+
+LOCAL_LDLIBS += -lm -llog
+LOCAL_LDLIBS += -lopencv_java
+
+include $(BUILD_SHARED_LIBRARY)
+

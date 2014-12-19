@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <menu xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:id="@+id/menu_face50"
+          android:title="Face size 50%"
+           />
+     <item android:id="@+id/menu_face40"
+          android:title="Face size 40%"
+           />
+   <item android:id="@+id/menu_face30"
+          android:title="Face size 30%"
+           />
+   <item android:id="@+id/java"
+          android:title="Java"
+           />
+    <item android:id="@+id/nativeTrack"
+          android:title="Native(tracking)"
+           />
+</menu>

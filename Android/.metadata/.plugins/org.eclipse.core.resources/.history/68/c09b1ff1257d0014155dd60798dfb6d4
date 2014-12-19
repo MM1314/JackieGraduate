@@ -1,0 +1,60 @@
+package org.opencv.samples.facedetect;
+import android.util.Log;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+
+
+
+/*
+ * 追踪类中主要包含了一个对象地址long类型的mNativeObj对象~~
+ * */
+public class DetectionBasedTracker
+{
+    //added on 20141206
+   static {
+	   Log.i("Jackie","Trying to initDebug");
+	    
+    if (!OpenCVLoader.initDebug()) {
+        Log.e("Jackie", "OpenCVLoader.initDebug() 失败");
+    } else {
+    	//mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+    	System.loadLibrary("opencv_java");
+    	System.loadLibrary("detection_based_tracker");
+    }
+   }
+    
+    public DetectionBasedTracker(String cascadeName, int minFaceSize) {
+        mNativeObj = nativeCreateObject(cascadeName, minFaceSize);
+    }
+
+    public void start() {
+        nativeStart(mNativeObj);
+    }
+
+    public void stop() {
+        nativeStop(mNativeObj);
+    }
+
+    public void setMinFaceSize(int size) {
+        nativeSetFaceSize(mNativeObj, size);
+    }
+
+    public void detect(Mat imageGray, MatOfRect faces) {
+        nativeDetect(mNativeObj, imageGray.getNativeObjAddr(), faces.getNativeObjAddr());
+    }
+
+    public void release() {
+        nativeDestroyObject(mNativeObj);
+        mNativeObj = 0;
+    }
+
+    private long mNativeObj = 0;
+
+    private static native long nativeCreateObject(String cascadeName, int minFaceSize);
+    private static native void nativeDestroyObject(long thiz);
+    private static native void nativeStart(long thiz);
+    private static native void nativeStop(long thiz);
+    private static native void nativeSetFaceSize(long thiz, int size);
+    private static native void nativeDetect(long thiz, long inputImage, long faces);
+}

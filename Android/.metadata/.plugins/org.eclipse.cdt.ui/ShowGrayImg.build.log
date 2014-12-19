@@ -1,0 +1,8 @@
+
+**** Build of configuration Default for project ShowGrayImg ****
+
+E:\android-ndk-r9b\ndk-build.cmd all 
+Android NDK: WARNING: APP_PLATFORM android-17 is larger than android:minSdkVersion 8 in ./AndroidManifest.xml    
+[armeabi] Install        : libskinTest.so => libs/armeabi/libskinTest.so
+
+**** Build Finished ****

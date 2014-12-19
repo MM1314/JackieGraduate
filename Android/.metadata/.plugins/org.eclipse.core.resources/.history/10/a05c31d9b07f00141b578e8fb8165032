@@ -1,0 +1,114 @@
+#include "com_iron_grayprocess_ImageProc.h"
+#include "HandReco/SkinTester.h"
+#include "HandReco/FingerTest.h"
+#include "HandReco/myLog.h"
+#include <jni.h>
+
+#include <opencv2/core/core.hpp>
+#include <string>
+#include <vector>
+
+using namespace cv;
+using namespace std;
+
+IplImage * change4channelTo3InIplImage(IplImage * src);
+/*
+ * Class:     com_iron_grayprocess_ImageProc
+ * Method:    grayProc
+ * Signature: ([III)[I
+ */
+JNIEXPORT jintArray JNICALL Java_com_iron_grayprocess_ImageProc_grayProc
+  (JNIEnv *env, jclass obj, jintArray buf, jint w, jint h){
+	jint *cbuf;
+	cbuf = env->GetIntArrayElements(buf, 0);
+	if(cbuf == NULL){
+		return 0;
+	}
+	//将jintArray数组转化成Mat对象,对Mat的操作其实是对cbuf的操作
+	Mat imgData(h, w, CV_8UC4, (unsigned char *)cbuf);
+	uchar* ptr = imgData.ptr(0);
+	for(int i = 0; i < w * h; i++){
+		//计算公式：Y(亮度) = 0.299*R + 0.587*G + 0.114*B
+		//对于一个int四字节，其彩色值存储方式为：BGRA
+		int grayScale = (int)(ptr[4*i+2]*0.299 + ptr[4*i+1]*0.587 + ptr[4*i+0]*0.114);
+		ptr[4*i+1] = grayScale;
+		ptr[4*i+2] = grayScale;
+		ptr[4*i+0] = grayScale;
+	}
+
+	int size = w * h;
+	jintArray result = env->NewIntArray(size);
+	env->SetIntArrayRegion(result, 0, size, cbuf);
+	env->ReleaseIntArrayElements(buf, cbuf, 0);
+	return result;
+}
+
+
+JNIEXPORT jintArray JNICALL Java_com_iron_grayprocess_ImageProc_procPic
+  (JNIEnv *env, jclass obj, jintArray buf, jint w, jint h){
+	jint *cbuf;
+	cbuf = env->GetIntArrayElements(buf, 0);
+	if(cbuf == NULL){
+		return 0;
+	}
+	Mat imgData(h, w, CV_8UC4, (unsigned char *)cbuf);
+	LOGD("image data get success~~");
+
+	/*IplImage image=IplImage(imgData);
+	IplImage* image3channel = change4channelTo3InIplImage(&image);
+
+	IplImage* pCannyImage=cvCreateImage(cvGetSize(image3channel),IPL_DEPTH_8U,1);
+
+	cvCanny(image3channel,pCannyImage,50,150,3);
+
+	int* outImage=new int[w*h];
+	for(int i=0;i<w*h;i++)
+	{
+		outImage[i]=(int)pCannyImage->imageData[i];
+	}
+
+	int size = w * h;
+	jintArray result = env->NewIntArray(size);
+	env->SetIntArrayRegion(result, 0, size, outImage);
+	env->ReleaseIntArrayElements(buf, cbuf, 0);
+	return result;
+*/
+
+//	FingerTest finTester;
+//
+//	Mat show_img = finTester.findContour(imgData);
+//	int size = w * h;
+	/*int total_size = show_img.cols * show_img.rows * show_img.channels();
+
+	int* outImage = new int[total_size];
+
+	int nr = show_img.rows;
+	int nc = show_img.cols * show_img.channels();
+
+	for(int j = 0; j < nr; j++){
+		uchar* data = show_img.ptr<uchar>(j);
+		for(int i = 0 ; i < nc; i++){
+			outImage[nr * j + i] = data[i];
+		}
+	}
+
+	jintArray result = env->NewIntArray(total_size);
+	env->SetIntArrayRegion(result, 0, total_size, outImage);
+	env->ReleaseIntArrayElements(buf, cbuf, 0);
+	return result;*/
+}
+
+IplImage * change4channelTo3InIplImage(IplImage * src) {
+    if (src->nChannels != 4) {
+        return NULL;
+    }
+    IplImage * destImg = cvCreateImage(cvGetSize(src), IPL_DEPTH_8U, 3);
+    for (int row = 0; row < src->height; row++) {
+        for (int col = 0; col < src->width; col++) {
+            CvScalar s = cvGet2D(src, row, col);
+            cvSet2D(destImg, row, col, s);
+        }
+    }
+    return destImg;
+}
+

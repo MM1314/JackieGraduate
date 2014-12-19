@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myhand_main"
+    android:orientation="vertical"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent">
+    <LinearLayout 
+        android:id="@+id/myhand_view"
+        android:orientation="vertical"
+    	android:layout_width="320px" 
+    	android:layout_height="250px"
+        ></LinearLayout>
+  
+    <!--
+      <com.example.myhand.FdView
+       android:id="@+id/myhand_layout"
+       android:layout_width="320px"
+       android:layout_height="240px"
+       android:orientation="vertical"
+       android:text = "begin:0"/>
+    
+      -->
+   
+   
+   <TextView
+       android:id="@+id/area_value"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text = "begin:0"/>
+    </LinearLayout>

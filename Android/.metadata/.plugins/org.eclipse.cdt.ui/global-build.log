@@ -1,0 +1,8 @@
+
+**** Build of configuration Default for project MainActivity ****
+
+E:\android-ndk-r9b\ndk-build.cmd all 
+Android NDK: WARNING: APP_PLATFORM android-17 is larger than android:minSdkVersion 8 in ./AndroidManifest.xml    
+[armeabi-v7a] Install        : libGrayPic.so => libs/armeabi-v7a/libGrayPic.so
+
+**** Build Finished ****

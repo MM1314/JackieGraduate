@@ -1,0 +1,14 @@
+1.在Android层采集图片并进行人手检测，当满足一定条件确定为人手时将图片即目标传递给Native层
+并且以后将采集到的每幅图片传递给Native层(注意只需传入灰度图像)
+2.在native层进行跟踪判断，返回跟踪结果（无目标或者有目标，又目标时将目标框传递进来）
+
+Java类设计:Hand
+Hand属性：long id, Mat rgba, String CascadeName,Mat gray, Rect region, enum motion
+Hand方法：find(), skin(), process(), result();
+
+需要用到的C++的函数：
+
+init(last_gray, box, bb_file);
+
+processFrame()
+
